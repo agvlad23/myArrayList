@@ -12,15 +12,19 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
     private int iFrom=0;
     private myInteger iToParent=new myInteger(0);
     private myInteger iTo= new myInteger(0);
-
+    private myArrayList<T> prev;
+    private myArrayList<T> next;
 
     private myArrayList(myArrayList<T> ts, int i, int i1) {
         elements=ts.elements;
         size=ts.size;
         //size=i1-i;
-        iFrom=i;
-        iTo.value=i1;
+        iFrom=i+ts.iFrom;
+        iTo.value=i1+ts.iFrom;
         iToParent=ts.iTo;
+
+        prev=ts;
+        ts.next=this;
 
     }
 
@@ -141,6 +145,8 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
 
     }
 
+
+
     /**Adds an element to the list
      * @param t Element to add
      * @return returns true if element added
@@ -150,18 +156,30 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
 
         if (elements.e.length<=size())
             addLength();
+        var tempListPrev=prev;
+        var tempListNext=next;
+
+        while(tempListPrev!=null){
+            tempListPrev.iTo.value++;
+            tempListPrev=tempListPrev.prev;
+        }
+/*        while(tempListNext!=null){
+            tempListNext.iTo.value++;
+            tempListNext=tempListNext.next;
+        }
+        */
         if (iTo.value>= elements.size) {
             iTo.value = elements.size++;
             size++;
             //elements.size++;
             elements.e[iTo.value++] = t;
-            iToParent.value++;
+            //iToParent.value++;
         }
         else{
             adds(iTo.value++,t);
             elements.size++;
-            if (iToParent!=null)
-                iToParent.value++;
+            //if (iToParent!=null)
+                //iToParent.value++;
         }
 
         return true;
