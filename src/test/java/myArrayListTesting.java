@@ -102,6 +102,32 @@ class myArrayListTesting {
         nA.subList(3,6).clear();
         assertEquals(nA.toString(),mA.toString());
 
+        mA.subList(3,6).subList(2,3).add(666);
+        nA.subList(3,6).subList(2,3).add(666);
+        assertEquals(nA.toString(),mA.toString());
+
+        var k1= mA.subList(1,5);
+        var k2= nA.subList(1,5);
+        var k11= mA.subList(4,7);
+        var k22= nA.subList(4,7);
+        //k11=[999, 999, 666]
+        k1.add(5);
+        k2.add(5);
+        assertAll(
+                ()->assertEquals(nA.toString(),mA.toString()),
+                ()->assertEquals(k1.toString(),k2.toString())
+        );
+
+        //mA= [1, 3, 4, 666, 999, 5, 999, 666, 12, 124, 124, 124, 125, 55555, 55555, 55555, 55555]
+        //k11 - [999, 5, 999]
+        k11.add(732);
+        assertAll(
+                ()->assertEquals("[1, 3, 4, 666, 999, 5, 999, 732, 666, 12, 124, 124, 124, 125, 55555, 55555, 55555, 55555]",
+                        mA.toString()),
+                ()->assertEquals(k1.toString(),k2.toString())
+        );
+
+        //k22.add(732);
     }
 
     @Test
@@ -234,7 +260,11 @@ class myArrayListTesting {
         mA.add(22);
         assertAll(
                 ()->assertEquals(nA.subList(0,3).toString(),mA.subList(0,3).toString()),
-                ()->assertEquals(nA.toString(),mA.toString())
+                ()->assertEquals(nA.toString(),mA.toString()),
+                ()->assertEquals(nA.subList(1,8).toString(),mA.subList(1,8).toString()),
+                ()->assertEquals(nA.subList(1,8).subList(1,5).subList(2,3).toString(),mA.subList(1,8).subList(1,5).subList(2,3).toString()),
+                ()->assertEquals(nA.subList(1,8).toString(),mA.subList(1,8).toString())
+
         );
     }
 }
