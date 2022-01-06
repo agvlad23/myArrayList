@@ -17,7 +17,6 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
     private MyArrayList(MyArrayList<T> ts, int i, int i1) {
         elements=ts.elements;
         size=ts.size;
-        //size=i1-i;
         iFrom=i+ts.iFrom;
         iTo.value=i1+ts.iFrom;
         iToParent=ts.iTo;
@@ -34,7 +33,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         size=0;
         elements.e=(T[]) new Object[list.size()+DEFAULT_SIZE];
         for (T e:list)
-            if (e != null)
+            //if (e != null)
                 add(e);
     }
 
@@ -43,7 +42,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      */
     public MyArrayList(int capacity){
         if (capacity<0)
-            throw new IllegalArgumentException("Illefal Capacity "+ capacity);
+            throw new IllegalArgumentException("Illegal Capacity "+ capacity);
         size=0;
         elements.e=(T[]) new Object[capacity];
     }
@@ -427,7 +426,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         for (int i=iFrom;i<iTo.value;i++) {
             if (i!=iFrom)
                 s.append(", ");
-            s.append(String.valueOf(elements.e[i]));
+            s.append(elements.e[i]);
         }
         return '['+ s.toString() +']';
     }
@@ -451,7 +450,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
     private class MyArrayListElements<T>{
         T[]e;
         int size;
-        int l=0;
+        int l;
         public MyArrayListElements(){
             T[] e= (T[])new Object[DEFAULT_SIZE];
             l=e.length;

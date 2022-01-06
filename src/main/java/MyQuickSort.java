@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -19,11 +21,10 @@ public class MyQuickSort {
         int j=h+1;
         T pivot=list.get(pivotChose(l,h));
         while (true){
-
             do
                 i++;
             while (list.get(i).compareTo(pivot)<0);
-                //i++;
+
             do
                 j--;
             while (list.get(j).compareTo(pivot)>0);
@@ -32,7 +33,6 @@ public class MyQuickSort {
                 return j;
             mySwap(list,i,j);
         }
-        //return 0;
     }
 
     private static <T> int partition(List<T>list,int l,int h,Comparator<T> c){
@@ -45,7 +45,7 @@ public class MyQuickSort {
             do
                 i++;
             while (c.compare(list.get(i),pivot)<0);
-            //i++;
+
             do
                 j--;
             while (c.compare(list.get(j),pivot)>0);
@@ -54,7 +54,6 @@ public class MyQuickSort {
                 return j;
             mySwap(list,i,j);
         }
-        //return 0;
     }
 
 
@@ -85,19 +84,19 @@ public class MyQuickSort {
     }
 
     /** Sort list with recursive quickSort
-     * @param list List to sort
+     * @param list Not Null List with no nulls to sort
      * @param <T> Type that implements Comparable
      */
-    public static <T extends Comparable> void quickSort(List<T> list){
+    public static <T extends Comparable> void quickSort(@NotNull List<T> list){
         myQuickSort(list,0,list.size()-1);
     }
 
     /** Sort list with recursive quickSort and comparator
-     * @param list List to sort
-     * @param c Comparator for List type
+     * @param list Not Null List to sort
+     * @param c Not Null Comparator for List type
      * @param <T> Type
      */
-    public static <T> void quickSort(List<T> list, Comparator<T> c){
+    public static <T> void quickSort(@NotNull List<T> list, @NotNull Comparator<T> c){
         myQuickSort(list,0,list.size()-1,c);
     }
 }

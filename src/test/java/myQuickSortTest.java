@@ -22,14 +22,16 @@ class myQuickSortTest {
         nA2=new ArrayList<Integer>(Arrays.asList(555,3,4,5,6,6,7,8,9,999));
         mA=new MyArrayList<Integer>(Arrays.asList(555,3,4,5,6,6,7,8,9,999));
         mA2=new MyArrayList<Integer>(Arrays.asList(555,3,4,5,6,6,7,8,9,999));
-        mStrA=new MyArrayList<String>(Arrays.asList("asd","bcsss","hsasdx","yyyy","ppp","cc"));
-        nStrA=new ArrayList<String>(Arrays.asList("cc","asd","ppp","bcsss","hsasdx","yyyy"));
+        mStrA=new MyArrayList<String>(Arrays.asList("asd","bcsss","hsasdx",null,"yyyy","ppp","cc"));
+        nStrA=new ArrayList<String>(Arrays.asList("cc",null,"asd","ppp","bcsss","hsasdx","yyyy"));
 
     }
 
     @Test
     @DisplayName("Sorting Comparable elements")
-    void Qs() {
+    void quickSortTest() {
+        mStrA.remove(null);
+        nStrA.remove(null);
         MyQuickSort.quickSort(nA);
         MyQuickSort.quickSort(mA);
         MyQuickSort.quickSort(mStrA);
@@ -43,13 +45,13 @@ class myQuickSortTest {
                 ()->assertEquals(nA2,mA),
                 ()->assertEquals(mA2.toString(),mA.toString()),
                 ()->assertEquals(nA2.toString(),mA.toString()),
-                ()->assertEquals(mStrA.toString(),nStrA.toString())
+                ()->assertEquals(nStrA.toString(),mStrA.toString())
         );
     }
 
     @Test
     @DisplayName("Sorting elements with Comparator")
-    void QsComparator() {
+    void quickSortComparatorTest() {
         MyStrComparator comparator= new MyStrComparator();
 
         MyQuickSort.quickSort(nA);
