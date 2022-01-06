@@ -69,11 +69,10 @@ class myArrayListTesting {
     @Test
     void iterator() {
         var it = mA.iterator();
-        int index=0;
+        var it2 = nA.iterator();
         assertTrue(it.hasNext());
         while (it.hasNext()){
-            assertEquals(mA.get(index), it.next());
-            index++;
+            assertEquals(it2.next(), it.next());
         }
         assertThrows(NoSuchElementException.class,()->it.next());
     }
@@ -81,6 +80,7 @@ class myArrayListTesting {
     @Test
     void toArray() {
         assertEquals(nA.toArray()[6], mA.toArray()[6]);
+        assertTrue(Arrays.equals(mA.toArray(),nA.toArray()));
     }
 
 
@@ -88,24 +88,22 @@ class myArrayListTesting {
     void add() {
         addTo(12,mA,nA);
         addTo(null,mA,nA);
-        mA.toString();
         assertEquals(nA.toString(),mA.toString());
 
         mA.subList(3,6).clear();
         nA.subList(3,6).clear();
-
         assertEquals(nA.toString(),mA.toString());
 
         addTo(124,mA,nA);
         addTo(124,mA,nA);
         addTo(124,mA,nA);
         addTo(125,mA,nA);
-
         assertEquals(nA.toString(),mA.toString());
 
         mA.subList(3,6).add(666);
         nA.subList(3,6).add(666);
         assertEquals(nA.toString(),mA.toString());
+
         addTo(55555,nA,mA);
         addTo(55555,nA,mA);
         addTo(55555,nA,mA);
@@ -175,6 +173,7 @@ class myArrayListTesting {
     void containsAll() {
         assertTrue(mA.containsAll(nA));
         assertTrue(mA.containsAll(mA));
+        assertTrue(nA.containsAll(mA));
     }
 
     @Test
@@ -189,6 +188,8 @@ class myArrayListTesting {
         mA.addAll(1,Arrays.asList(55,312,5555));
         nA.addAll(1,Arrays.asList(55,312,5555));
         assertEquals(nA.toString(),mA.toString());
+
+        assertThrows(IndexOutOfBoundsException.class, ()->mA.addAll(-1,Arrays.asList(55,312,5555)));
     }
 
     @Test
@@ -208,6 +209,8 @@ class myArrayListTesting {
     @Test
     void clear() {
         mA.clear();
+        nA.clear();
+        assertEquals(nA.toString(),mA.toString());
     }
 
     @Test

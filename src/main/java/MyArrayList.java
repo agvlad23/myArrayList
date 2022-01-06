@@ -195,7 +195,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      * @return true if added all elements from collection
      */
     @Override
-    public boolean addAll(Collection<? extends T> collection) {
+    public boolean addAll(@NotNull Collection<? extends T> collection) {
         for (var e:collection)
             add(e);
         return true;
@@ -203,11 +203,13 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
 
     /**Adds all elements from collection to list beginning from index
      * @param index index from list from where start to add
-     * @param collection Collection
+     * @param collection Not Null Collection
      * @return true if added all elements from collection
      */
     @Override
-    public boolean addAll(int index, Collection<? extends T> collection) {
+    public boolean addAll(int index, @NotNull Collection<? extends T> collection) {
+        if (index < iFrom || index > iTo.value)
+            throw new IndexOutOfBoundsException("index " + index+ " is out of bound for length " + iTo.value);
         for (var e:collection)
             add(index++,e);
         return true;
