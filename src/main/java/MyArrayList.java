@@ -357,7 +357,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
     @Override
     public int indexOf(Object o) {
         for (int i=0;i<size;i++){
-            if (elements.e[i].equals(o))
+            if (elements.e[i]==o || elements.e[i].equals(o))
                 return i;
         }
         return -1;
@@ -365,15 +365,15 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
 
     /**Returns index of last occurrence
      * @param o Object
-     * @return last index of object
+     * @return last index of object, -1 if not found
      */
     @Override
     public int lastIndexOf(Object o) {
         for (int i=iTo.value-1;i>=iFrom;i--){
-            if (elements.e[i].equals(o))
+            if (elements.e[i]==o || elements.e[i].equals(o))
                 return i;
         }
-        return 0;
+        return -1;
     }
 
     /**Return ListIterator
@@ -415,7 +415,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         for (int i=iFrom;i<iTo.value;i++) {
             if (i!=iFrom)
                 s.append(", ");
-            s.append(elements.e[i].toString());
+            s.append(String.valueOf(elements.e[i]));
         }
         return '['+ s.toString() +']';
     }
@@ -471,6 +471,8 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         private int currentIndex;
 
         public MyArrayListListIterator(int i){
+            if (i<iFrom || i>iTo.value)
+                throw new IndexOutOfBoundsException("Index: " + i + ", Size: " + iTo.value);
             currentIndex=i;
         }
 
@@ -499,7 +501,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         public T previous() {
             if (! hasPrevious())
                 throw new NoSuchElementException();
-            return  elements.e[currentIndex--];
+            return  elements.e[--currentIndex];
         }
 
         @Override

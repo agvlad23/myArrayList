@@ -87,7 +87,8 @@ class myArrayListTesting {
     @Test
     void add() {
         addTo(12,mA,nA);
-
+        addTo(null,mA,nA);
+        mA.toString();
         assertEquals(nA.toString(),mA.toString());
 
         mA.subList(3,6).clear();
@@ -130,16 +131,16 @@ class myArrayListTesting {
                 ()->assertEquals(k1.toString(),k2.toString())
         );
 
-        //mA= [1, 3, 4, 666, 999, 5, 999, 666, 12, 124, 124, 124, 125, 55555, 55555, 55555, 55555]
+        //mA -  [1, 3, 4, 666, 999, 5, 999, 666, 12, null, 124, 124, 124, 125, 55555, 55555, 55555, 55555]
         //k11 - [999, 5, 999]
         k11.add(732);
         assertAll(
-                ()->assertEquals("[1, 3, 4, 666, 999, 5, 999, 732, 666, 12, 124, 124, 124, 125, 55555, 55555, 55555, 55555]",
+                ()->assertEquals("[1, 3, 4, 666, 999, 5, 999, 732, 666, 12, null, 124, 124, 124, 125, 55555, 55555, 55555, 55555]",
                         mA.toString()),
                 ()->assertEquals(k1.toString(),k2.toString())
         );
 
-        //k22.add(732);
+        //k22.add(732); // ошибка
     }
 
     @Test
@@ -249,6 +250,13 @@ class myArrayListTesting {
         mA.subList(1,8).subList(1,6).remove(o);
         nA.subList(1,8).subList(1,6).remove(o2);
         assertEquals(nA.toString(),mA.toString());
+
+        mA.add(null);
+        nA.add(null);
+
+        mA.remove(null);
+        nA.remove(null);
+        assertEquals(nA.toString(),mA.toString());
     }
 
     @Test
@@ -257,7 +265,11 @@ class myArrayListTesting {
                 ()->assertEquals(0, mA.indexOf(1)),
                 ()->assertEquals(1, mA.indexOf(3)),
                 ()->assertEquals(4, mA.indexOf(6)),
-                ()->assertEquals(9, mA.indexOf(999))
+                ()->assertEquals(9, mA.indexOf(999)),
+                ()->assertEquals(-1, mA.indexOf(225125136)),
+                ()->assertEquals(-1, mA.indexOf(null)),
+                ()-> { mA.add(null);
+                    assertEquals(11,mA.indexOf(null));}
         );
     }
 
@@ -267,20 +279,60 @@ class myArrayListTesting {
                 ()->assertEquals(0, mA.lastIndexOf(1)),
                 ()->assertEquals(1, mA.lastIndexOf(3)),
                 ()->assertEquals(5, mA.lastIndexOf(6)),
-                ()->assertEquals(10, mA.lastIndexOf(999))
+                ()->assertEquals(10, mA.lastIndexOf(999)),
+                ()->assertEquals(-1, mA.indexOf(225125136)),
+                ()->assertEquals(-1, mA.indexOf(null)),
+                ()-> { mA.add(null);
+                    assertEquals(11,mA.indexOf(null));}
         );
     }
 
     @Test
     void listIterator() {
         var it=mA.listIterator();
+        var it2=nA.listIterator();
         assertFalse(it.hasPrevious());
+        assertTrue(it.hasNext());
+        assertAll(
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.previous(),it2.previous())
+        );
     }
 
     @Test
     void testListIterator() {
+        assertThrows(IndexOutOfBoundsException.class,()-> mA.listIterator(-1));
         var it=mA.listIterator(5);
+        var it2=nA.listIterator(5);
         assertTrue(it.hasPrevious());
+        assertTrue(it.hasNext());
+        assertAll(
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.next(),it2.next()),
+                ()->assertEquals(it.previous(),it2.previous()),
+                ()->assertEquals(it.previous(),it2.previous())
+        );
+
     }
 
     @Test
