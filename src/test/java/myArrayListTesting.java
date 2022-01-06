@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class myArrayListTesting {
 
-    myArrayList<Integer> mA;
+    MyArrayList<Integer> mA;
     ArrayList<Integer> nA;
     int size;
 
@@ -24,7 +24,7 @@ class myArrayListTesting {
     @BeforeEach
     void setUp() {
 
-        mA= new myArrayList<Integer>(1,3,4,5,6,6,7,8,9,999,999);
+        mA= new MyArrayList<Integer>(1,3,4,5,6,6,7,8,9,999,999);
         size=11;
         nA= new ArrayList<Integer>(Arrays.asList(1,3,4,5,6,6,7,8,9,999,999));
     }
@@ -206,9 +206,13 @@ class myArrayListTesting {
 
     @Test
     void testAdd() {
-        mA.add(5,512345);
-        nA.add(5,512345);
+        mA.subList(1,9).add(5,512345);
+        nA.subList(1,9).add(5,512345);
         assertEquals(nA.toString(),mA.toString());
+        mA.subList(1,9).subList(1,8).add(5,512345);
+        nA.subList(1,9).subList(1,8).add(5,512345);
+        assertEquals(nA.toString(),mA.toString());
+
     }
 
     @Test

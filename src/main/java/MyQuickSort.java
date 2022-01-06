@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Class to Sort List of any type
  */
-public class myQuickSort {
+public class MyQuickSort {
 
     private static <T> void mySwap(List<T> list,int i,int i1){
         T temp=list.get(i);
@@ -88,7 +88,7 @@ public class myQuickSort {
      * @param list List to sort
      * @param <T> Type that implements Comparable
      */
-    public static <T extends Comparable> void qs(List<T> list){
+    public static <T extends Comparable> void quickSort(List<T> list){
         myQuickSort(list,0,list.size()-1);
     }
 
@@ -97,7 +97,7 @@ public class myQuickSort {
      * @param c Comparator for List type
      * @param <T> Type
      */
-    public static <T> void qs(List<T> list,Comparator<T> c){
+    public static <T> void quickSort(List<T> list, Comparator<T> c){
         myQuickSort(list,0,list.size()-1,c);
     }
 }

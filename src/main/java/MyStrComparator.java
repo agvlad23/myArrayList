@@ -3,7 +3,7 @@ import java.util.Comparator;
 /**
  * Comparator for String that compare only last char
  */
-public class myStrComparator implements Comparator<String> {
+public class MyStrComparator implements Comparator<String> {
 
     @Override
     public int compare(String s, String t1) {

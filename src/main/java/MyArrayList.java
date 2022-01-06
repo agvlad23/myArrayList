@@ -2,20 +2,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
+public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
 
     private static final int DEFAULT_SIZE=15;
     private static final int COEF=2;
-    private myArrayListElements<T> elements=new myArrayListElements<>();
-    //private T[] elements;
+    private MyArrayListElements<T> elements=new MyArrayListElements<>();
     private int size;
     private int iFrom=0;
-    private myInteger iToParent=new myInteger(0);
-    private myInteger iTo= new myInteger(0);
-    private myArrayList<T> prev;
-    private myArrayList<T> next;
+    private MyInteger iToParent=new MyInteger(0);
+    private MyInteger iTo= new MyInteger(0);
+    private MyArrayList<T> prev;
+    private MyArrayList<T> next;
 
-    private myArrayList(myArrayList<T> ts, int i, int i1) {
+    private MyArrayList(MyArrayList<T> ts, int i, int i1) {
         elements=ts.elements;
         size=ts.size;
         //size=i1-i;
@@ -32,7 +31,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
     /**Initializes list with elements
      * @param array array of elements
      */
-    public myArrayList(T... array){
+    public MyArrayList(T... array){
         size=0;
         elements.e=(T[]) new Object[array.length+DEFAULT_SIZE];
         for (T e:array)
@@ -44,7 +43,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
     /**Initializes list with other list of elements
      * @param list list of elements
      */
-    public myArrayList(List<T> list){
+    public MyArrayList(List<T> list){
         size=0;
         elements.e=(T[]) new Object[list.size()+DEFAULT_SIZE];
         for (T e:list)
@@ -55,8 +54,6 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
 
     private void addLength(){
         T[] tempElements= (T[]) new Object[COEF*elements.e.length];
-        /*for (int i=0;i<size;i++)
-            tempElements[i]=elements[i];*/
         copyArray(elements.e,0,tempElements,0, elements.e.length);
 
         elements.e=tempElements;
@@ -65,9 +62,6 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
     private void copyArray(@NotNull T[] arFrom, int index1, T[] arTo, int index2, int count){
         if(index1+count>arFrom.length||index2+count>arTo.length)
             throw new ArrayIndexOutOfBoundsException();
-
-       /* for (int i=index1,j=index2,counter=0;counter<count;counter++,i++,j++)
-            arTo[i]=arFrom[j];*/
 
         System.arraycopy(arFrom,index1,arTo,index2,count);
     }
@@ -78,7 +72,6 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
      */
     @Override
     public int size() {
-
         return iTo.value-iFrom;
     }
 
@@ -107,7 +100,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
      */
     @Override
     public @NotNull Iterator<T> iterator() {
-        return new myArrayListIterator();
+        return new MyArrayListIterator();
     }
 
     /** Returns array of current list
@@ -116,10 +109,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
     @Override
     public Object[] toArray() {
         T[] tempElements= (T[]) new Object[elements.size];
-        //for (int i=0;i<size();i++)
-        //    tempElements[i]=elements.e[i];
         copyArray(elements.e,0,tempElements,0, elements.size);
-        //elements.e=tempElements;
         return tempElements;
 
     }
@@ -134,11 +124,8 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
         if (t1s.length<size()){
              t1s= (T1[]) new Object[size()];
         }
-       // T[] tempElements= (T[]) new Object[size()];
         for (int i=0;i<size();i++)
             t1s[i]=(T1)elements.e[i];
-        //copyArray(elements.e,0,tempElements,0, size());
-        //elements.e=tempElements;
         if (t1s.length>size())
             t1s[size()]=null;
         return t1s;
@@ -157,29 +144,20 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
         if (elements.e.length<=size())
             addLength();
         var tempListPrev=prev;
-        var tempListNext=next;
 
         while(tempListPrev!=null){
             tempListPrev.iTo.value++;
             tempListPrev=tempListPrev.prev;
         }
-/*        while(tempListNext!=null){
-            tempListNext.iTo.value++;
-            tempListNext=tempListNext.next;
-        }
-        */
+
         if (iTo.value>= elements.size) {
             iTo.value = elements.size++;
             size++;
-            //elements.size++;
             elements.e[iTo.value++] = t;
-            //iToParent.value++;
         }
         else{
             adds(iTo.value++,t);
             elements.size++;
-            //if (iToParent!=null)
-                //iToParent.value++;
         }
 
         return true;
@@ -273,7 +251,6 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
         remove(iFrom,iTo.value);
         iFrom=0;
         iTo.value=0;
-
     }
 
     /**Returns element with given index from list
@@ -316,36 +293,28 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
      */
     @Override
     public void add(int i, T t) {
-
         if (elements.e.length<=size())
             addLength();
+        var tempListPrev=prev;
+
+        while(tempListPrev!=null){
+            tempListPrev.iTo.value++;
+            tempListPrev=tempListPrev.prev;
+        }
+
         if (iTo.value>= elements.size) {
             iTo.value = elements.size++;
             size++;
-            //elements.size++;
-            adds(i,t);
+
+            adds(i+iFrom,t);
             iTo.value++;
-            //elements.e[iTo.value++] = t;
-            if (iToParent!=null)
-                iToParent.value++;
         }
         else{
-            adds(iTo.value++,t);
+            adds(i +iFrom,t);
+            iTo.value++;
             elements.size++;
-            if (iToParent!=null)
-                iToParent.value++;
         }
 
-
-
-
-
-/*
-        var k =elements.e.length;
-        if (k<=size)
-            addLength();
-        copyArray(elements.e, i, elements.e, i+1, elements.size-i);
-        elements.e[i]=t;*/
     }
 
     /**Removes element with given index
@@ -404,7 +373,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
      */
     @Override
     public @NotNull ListIterator<T> listIterator() {
-        return new myArrayListListIterator();
+        return new MyArrayListListIterator();
     }
 
     /**Return ListIterator witch begins with index
@@ -413,7 +382,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
      */
     @Override
     public @NotNull ListIterator<T> listIterator(int i) {
-        return new myArrayListListIterator(i);
+        return new MyArrayListListIterator(i);
     }
 
     //@Override
@@ -421,7 +390,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
         T[] ar= (T[])new Object[i1-i+DEFAULT_SIZE];
 
         copyArray(elements.e,i,ar,0,i1-i);
-        return new myArrayList<>(ar);
+        return new MyArrayList<>(ar);
     }
 
     /**Return sublist of list start from i to t1
@@ -432,7 +401,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
     @Override
     public List<T> subList(int i, int i1) {
         //copyArray(elements,i,ar,0,i1-i);
-        return new myArrayList<>(this,i,i1);
+        return new MyArrayList<>(this,i,i1);
     }
 
     /**Return String representation of List
@@ -457,7 +426,7 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
      * @return 0 if equals, -1 else
      */
     @Override
-    public int compareTo(@NotNull myArrayList<T> ts) {
+    public int compareTo(@NotNull MyArrayList<T> ts) {
         if (size()==ts.size()){
             for (int i=0;i<size();i++)
                 if(elements.e[i]!=ts.elements.e[i])
@@ -467,29 +436,29 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
     }
 
 
-    private class myArrayListElements<T>{
+    private class MyArrayListElements<T>{
         T[]e;
         int from;
         Integer to;
         int size;
         int l=0;
-        public myArrayListElements(){
+        public MyArrayListElements(){
             T[] e= (T[])new Object[DEFAULT_SIZE];
             l=e.length;
         }
-        public myArrayListElements(Integer iTo){
+        public MyArrayListElements(Integer iTo){
 
             T[] e= (T[])new Object[DEFAULT_SIZE];
             to=iTo;
         }
     }
 
-    private class myInteger{
+    private class MyInteger {
         private int value;
-        public myInteger(int i){value=i;}
+        public MyInteger(int i){value=i;}
     }
 
-    private class myArrayListIterator implements Iterator<T>{
+    private class MyArrayListIterator implements Iterator<T>{
         private int currentIndex=0;
 
         @Override
@@ -505,14 +474,14 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
         }
     }
 
-    private class myArrayListListIterator implements ListIterator<T>{
+    private class MyArrayListListIterator implements ListIterator<T>{
         private int currentIndex;
 
-        public myArrayListListIterator(int i){
+        public MyArrayListListIterator(int i){
             currentIndex=i;
         }
 
-        public myArrayListListIterator(){
+        public MyArrayListListIterator(){
             currentIndex=0;
         }
 
@@ -556,19 +525,19 @@ public class myArrayList<T> implements List<T>,Comparable<myArrayList<T>>{
 
         @Override
         public void remove() {
-            myArrayList.this.remove(currentIndex);
+            MyArrayList.this.remove(currentIndex);
 
         }
 
         @Override
         public void set(T t) {
-            myArrayList.this.set(currentIndex-1,t);
+            MyArrayList.this.set(currentIndex-1,t);
 
         }
 
         @Override
         public void add(T t) {
-            myArrayList.this.adds(currentIndex,t);
+            MyArrayList.this.adds(currentIndex,t);
 
         }
     }
