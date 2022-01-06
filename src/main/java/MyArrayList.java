@@ -88,6 +88,8 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      */
     @Override
     public boolean contains(Object o) {
+        if (o==null)
+            return false;
         for (T i:elements.e)
             if ((o).equals(i))
                 return true;

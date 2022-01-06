@@ -58,11 +58,11 @@ class myArrayListTesting {
     @Test
     void contains() {
         assertAll(
-                ()-> assertTrue(nA.contains(1)),
-                ()-> assertFalse(nA.contains(2)),
-                ()-> assertTrue(nA.contains(3)),
-                ()-> assertTrue(nA.contains(4)),
-                ()-> assertTrue(nA.contains(5))
+                ()-> assertTrue(mA.contains(1)),
+                ()-> assertFalse(mA.contains(2)),
+                ()-> assertTrue(mA.contains(3)),
+                ()-> assertTrue(mA.contains(4)),
+                ()-> assertFalse(mA.contains(null))
         );
     }
 
