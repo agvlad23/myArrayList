@@ -215,11 +215,15 @@ class myArrayListTesting {
 
     @Test
     void get() {
+        var mA2=new MyArrayList<Integer>();
         for (int i=0;i<100;i++) {
             mA.add(i);
+            mA2.add(i);
             assertEquals(i,mA.get(i+11));
+            assertEquals(i,mA2.get(i));
         }
         assertEquals(3,mA.get(1));
+        assertThrows(IndexOutOfBoundsException.class,()-> mA.get(-1));
     }
 
     @Test
@@ -228,8 +232,9 @@ class myArrayListTesting {
                 ()->assertEquals(1,mA.set(1,1)),
                 ()->assertEquals(3,mA.set(5,3)),
                 ()->assertEquals(-1,mA.set(1,-1)),
-                ()-> assertThrows(IndexOutOfBoundsException.class, ()->mA.set(-1,-1)),
-                ()-> assertThrows(IndexOutOfBoundsException.class, ()->mA.set(mA.size()+1,-1))
+                ()->assertEquals(null,mA.set(1,null)),
+                ()-> assertThrows(IndexOutOfBoundsException.class, ()->mA.set(-1,1)),
+                ()-> assertThrows(IndexOutOfBoundsException.class, ()->mA.set(mA.size()+1,1))
 
         );
 
@@ -240,8 +245,15 @@ class myArrayListTesting {
         mA.subList(1,9).add(5,512345);
         nA.subList(1,9).add(5,512345);
         assertEquals(nA.toString(),mA.toString());
+
         mA.subList(1,9).subList(1,8).add(5,512345);
         nA.subList(1,9).subList(1,8).add(5,512345);
+        assertEquals(nA.toString(),mA.toString());
+
+        assertThrows(IndexOutOfBoundsException.class,()-> mA.add(-1,5));
+
+        mA.subList(1,9).subList(1,8).add(5,null);
+        nA.subList(1,9).subList(1,8).add(5,null);
         assertEquals(nA.toString(),mA.toString());
 
     }

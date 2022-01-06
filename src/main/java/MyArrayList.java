@@ -36,7 +36,6 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         for (T e:list)
             if (e != null)
                 add(e);
-
     }
 
     /**Initializes empty list with given capacity
@@ -47,6 +46,14 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
             throw new IllegalArgumentException("Illefal Capacity "+ capacity);
         size=0;
         elements.e=(T[]) new Object[capacity];
+    }
+
+    /**Initializes empty list with default capacity
+     *
+     */
+    public MyArrayList(){
+        size=0;
+        elements.e=(T[]) new Object[DEFAULT_SIZE];
     }
 
     private void addLength(){
@@ -261,9 +268,9 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      */
     @Override
     public T get(int i) {
-        if (i<size() && i>=0)
+        if (i>=iFrom && i<iTo.value)
             return elements.e[i];
-        else throw new IndexOutOfBoundsException();
+        else throw new IndexOutOfBoundsException("index " + i+ " is out of bound for length " + iTo.value);
     }
 
     /**Sets element with given index with given value
@@ -273,9 +280,9 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      */
     @Override
     public T set(int i, T t) {
-        if (i<size() && i>=0)
+        if (i>=iFrom && i<iTo.value)
             return elements.e[i]=t;
-        else throw new IndexOutOfBoundsException();
+        else throw new IndexOutOfBoundsException("index " + i+ " is out of bound for length " + iTo.value);
     }
 
     /**Adds element to array with given index
@@ -295,6 +302,9 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      */
     @Override
     public void add(int i, T t) {
+        if (i<iFrom || i>iTo.value)
+            throw new IndexOutOfBoundsException("Index: " + i + ", Size: " + iTo.value);
+
         if (elements.e.length<=size())
             addLength();
         var tempListPrev=prev;
