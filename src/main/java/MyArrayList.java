@@ -27,23 +27,10 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
 
     }
 
-
-    /**Initializes list with elements
-     * @param array array of elements
-     */
-    public MyArrayList(T... array){
-        size=0;
-        elements.e=(T[]) new Object[array.length+DEFAULT_SIZE];
-        for (T e:array)
-            if (e != null)
-                add(e);
-
-    }
-
     /**Initializes list with other list of elements
-     * @param list list of elements
+     * @param list list of elements (must no be null)
      */
-    public MyArrayList(List<T> list){
+    public MyArrayList(@NotNull List<? extends T> list){
         size=0;
         elements.e=(T[]) new Object[list.size()+DEFAULT_SIZE];
         for (T e:list)
@@ -207,7 +194,6 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      */
     @Override
     public boolean addAll(int index, Collection<? extends T> collection) {
-        int i=index;
         for (var e:collection)
             add(index++,e);
         return true;
@@ -230,7 +216,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      * @return true if all elements from collection retained
      */
     @Override
-    public boolean retainAll(Collection<?> collection) {
+    public boolean retainAll(@NotNull Collection<?> collection) {
         boolean changed=false;
         var temp=elements.e.clone();
         for (var e:temp)
@@ -323,8 +309,10 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
      */
     @Override
     public T remove(int i) {
+        if(i<0 || i+iFrom>=iTo.value)
+            throw new IndexOutOfBoundsException("index " + i+ " is out of bound for length " + iTo.value);
         T elem=elements.e[i];
-        remove(i,i+1);
+        remove(i+iFrom,i+1+iFrom);
         return elem;
     }
 
@@ -338,7 +326,13 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         size -=i1-i;
         elements.size-=i1-i;
         iTo.value--;
-        iToParent.value--;
+
+        var tempListPrev=prev;
+        while(tempListPrev!=null){
+            tempListPrev.iTo.value--;
+            tempListPrev=tempListPrev.prev;
+        }
+
         return true;
     }
 
@@ -385,21 +379,13 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         return new MyArrayListListIterator(i);
     }
 
-    //@Override
-    private List<T> subListBad(int i, int i1) {
-        T[] ar= (T[])new Object[i1-i+DEFAULT_SIZE];
-
-        copyArray(elements.e,i,ar,0,i1-i);
-        return new MyArrayList<>(ar);
-    }
-
     /**Return sublist of list start from i to t1
      * @param i index from
      * @param i1 index to
      * @return subList of the list
      */
     @Override
-    public List<T> subList(int i, int i1) {
+    public @NotNull List<T> subList(int i, int i1) {
         //copyArray(elements,i,ar,0,i1-i);
         return new MyArrayList<>(this,i,i1);
     }
@@ -438,18 +424,11 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
 
     private class MyArrayListElements<T>{
         T[]e;
-        int from;
-        Integer to;
         int size;
         int l=0;
         public MyArrayListElements(){
             T[] e= (T[])new Object[DEFAULT_SIZE];
             l=e.length;
-        }
-        public MyArrayListElements(Integer iTo){
-
-            T[] e= (T[])new Object[DEFAULT_SIZE];
-            to=iTo;
         }
     }
 
@@ -470,7 +449,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         public T next() {
             if (! hasNext())
                 throw new NoSuchElementException();
-            return (T) elements.e[currentIndex++];
+            return  elements.e[currentIndex++];
         }
     }
 
@@ -494,7 +473,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         public T next() {
             if (! hasNext())
                 throw new NoSuchElementException();
-            return (T) elements.e[currentIndex++];
+            return  elements.e[currentIndex++];
         }
 
         @Override
@@ -506,7 +485,7 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
         public T previous() {
             if (! hasPrevious())
                 throw new NoSuchElementException();
-            return (T) elements.e[currentIndex--];
+            return  elements.e[currentIndex--];
         }
 
         @Override

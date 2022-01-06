@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class myArrayListTesting {
 
-    MyArrayList<Integer> mA;
-    ArrayList<Integer> nA;
+    List<Integer> mA;
+    List<Integer> nA;
     int size;
 
     private <T> void addTo(T elem, List<T>... lists){
@@ -24,9 +25,16 @@ class myArrayListTesting {
     @BeforeEach
     void setUp() {
 
-        mA= new MyArrayList<Integer>(1,3,4,5,6,6,7,8,9,999,999);
+        mA= new MyArrayList<Integer>(Arrays.asList(1,3,4,5,6,6,7,8,9,999,999));
         size=11;
         nA= new ArrayList<Integer>(Arrays.asList(1,3,4,5,6,6,7,8,9,999,999));
+    }
+
+    @Test
+    @DisplayName("Initialization")
+    void initializationTest(){
+        assertThrows(IllegalArgumentException.class,()->new MyArrayList<Float>(null));
+
     }
 
     @Test
@@ -138,8 +146,23 @@ class myArrayListTesting {
         nA.remove(4);
         mA.remove(8);
         nA.remove(8);
-
         assertEquals(nA.toString(),mA.toString());
+
+        assertThrows(IndexOutOfBoundsException.class ,()->mA.remove(8));
+        assertThrows(IndexOutOfBoundsException.class ,()->mA.remove(-1));
+
+        mA.subList(1,5).remove(1);
+        nA.subList(1,5).remove(1);
+        assertEquals(nA.toString(),mA.toString());
+
+        mA.subList(1,5).subList(1,3).remove(1);
+        nA.subList(1,5).subList(1,3).remove(1);
+        assertEquals(nA.toString(),mA.toString());
+
+        assertThrows(IndexOutOfBoundsException.class ,()->{
+                while(true)
+                    mA.remove(0);
+        });
 
     }
 
@@ -218,9 +241,9 @@ class myArrayListTesting {
     @Test
     void testRemove() {
         Object o=mA.get(5);
-        Object o2=mA.get(5);
-        mA.remove(o);
-        nA.remove(o2);
+        Object o2=nA.get(5);
+        mA.subList(1,8).subList(1,6).remove(o);
+        nA.subList(1,8).subList(1,6).remove(o2);
         assertEquals(nA.toString(),mA.toString());
     }
 
