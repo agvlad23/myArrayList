@@ -34,7 +34,11 @@ class myArrayListTesting {
     @DisplayName("Initialization")
     void initializationTest(){
         assertThrows(IllegalArgumentException.class,()->new MyArrayList<Float>(null));
-
+        var k=new MyArrayList<String>(5);
+        k.add("sdsd");
+        k= new MyArrayList<String>(0);
+        k.add("adsad");
+        assertThrows(IllegalArgumentException.class,()->new MyArrayList<String>(-5));
     }
 
     @Test

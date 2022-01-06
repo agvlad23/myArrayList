@@ -39,8 +39,20 @@ public class MyArrayList<T> implements List<T>,Comparable<MyArrayList<T>>{
 
     }
 
+    /**Initializes empty list with given capacity
+     * @param capacity initial capacity of list
+     */
+    public MyArrayList(int capacity){
+        if (capacity<0)
+            throw new IllegalArgumentException("Illefal Capacity "+ capacity);
+        size=0;
+        elements.e=(T[]) new Object[capacity];
+    }
+
     private void addLength(){
-        T[] tempElements= (T[]) new Object[COEF*elements.e.length];
+
+        T[] tempElements= (T[]) new Object[COEF*
+                                            Math.max(elements.e.length,1)];
         copyArray(elements.e,0,tempElements,0, elements.e.length);
 
         elements.e=tempElements;
